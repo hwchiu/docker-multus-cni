@@ -1,3 +1,4 @@
 gopath/
 vendor/*
 !vendor/vendor.json
+docker-multus-cni
