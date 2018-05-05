@@ -1,4 +1,4 @@
-## Introduction
+## Introduction [![Build Status](https://travis-ci.org/hwchiu/docker-multus-cni.svg?branch=master)](https://travis-ci.org/hwchiu/docker-multus-cni) [![codecov](https://codecov.io/gh/hwchiu/docker-multus-cni/branch/master/graph/badge.svg)](https://codecov.io/gh/hwchiu/docker-multus-cni)
 This docker image is used to deploy the multus-cni in kubernetes cluster.
 In the docker image, it contains the following files.
 1. CNI binary (multus)
