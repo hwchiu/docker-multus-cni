@@ -1,0 +1,13 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "4tf/NLYwq+QHr7On4zUNe36MiEQ=",
+			"path": "github.com/Intel-Corp/multus-cni",
+			"revision": "b9446232cdf4f1b6f2bea583291973cc97e963f4",
+			"revisionTime": "2018-04-28T14:56:38Z"
+		}
+	],
+	"rootPath": "github.com/hwchiu/docker-multus-cni"
+}
