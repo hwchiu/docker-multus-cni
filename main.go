@@ -25,7 +25,7 @@ func main() {
 
 	cniObject, err := utils.LoadCNIConfig(inputCNI)
 	if err != nil {
-		log.Fatal("You need to specify the input CNI path")
+		log.Fatal("Open CNI config fail", err)
 	}
 
 	netObj, err := utils.GenerateMultusObject(kubeconfig, cniObject)
