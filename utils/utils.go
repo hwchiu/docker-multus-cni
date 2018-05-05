@@ -7,11 +7,7 @@ import (
 	"github.com/containernetworking/cni/pkg/types"
 )
 
-type CNIObject struct {
-	CNIVersion string                   `json:"cniVersion,omitempty"`
-	Name       string                   `json:"name,omitempty"`
-	Plugins    []map[string]interface{} `json:"plugins,omitempty"`
-}
+type CNIObject map[string]interface{}
 
 type NetConf struct {
 	types.NetConf
@@ -31,8 +27,9 @@ func LoadCNIConfig(path string) (*CNIObject, error) {
 }
 
 func GenerateMultusObject(config string, cniObject *CNIObject) (*NetConf, error) {
-	plugins := cniObject.Plugins
-	plugins[0]["name"] = cniObject.Name
+	plugins := []map[string]interface{}{
+		*cniObject,
+	}
 	data := NetConf{
 		types.NetConf{
 			Type:       "multus",
