@@ -31,13 +31,15 @@ func LoadCNIConfig(path string) (*CNIObject, error) {
 }
 
 func GenerateMultusObject(config string, cniObject *CNIObject) (*NetConf, error) {
+	plugins := cniObject.Plugins
+	plugins[0]["name"] = cniObject.Name
 	data := NetConf{
 		types.NetConf{
 			Type:       "multus",
 			CNIVersion: "0.3.1",
 			Name:       "multus-cni",
 		},
-		cniObject.Plugins,
+		plugins,
 		config,
 	}
 	return &data, nil
