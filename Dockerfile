@@ -12,8 +12,8 @@ WORKDIR multus-cni
 RUN ./build
 
 WORKDIR /go/src/github.com/hwchiu/docker-multus-cni
+ADD /go/src/github.com/hwchiu/docker-multus-cni/multus-cni/bin/multus /go/bin/multus
 RUN go install .
-ADD multus-cni/bin/multus /go/bin/multus
 ADD conf/ /tmp
 ADD yaml/ /tmp
 ADD entrypoint.sh /
