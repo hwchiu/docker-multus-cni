@@ -56,4 +56,9 @@ func TestLoadCNIConfig(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, obj)
 
+	netObj, err := GenerateMultusObject("/etc/config", obj)
+	assert.NoError(t, err)
+	assert.NotNil(t, netObj)
+
+	assert.Equal(t, "/etc/config", netObj.Kubeconfig)
 }
