@@ -9,10 +9,9 @@ RUN go get github.com/kardianos/govendor
 RUN govendor sync
 RUN git submodule init && git submodule update
 WORKDIR multus-cni
-RUN ./build
+RUN ./build && cp ./bin/multus /go/bin/multus
 
 WORKDIR /go/src/github.com/hwchiu/docker-multus-cni
-ADD /go/src/github.com/hwchiu/docker-multus-cni/multus-cni/bin/multus /go/bin/multus
 RUN go install .
 ADD conf/ /tmp
 ADD yaml/ /tmp
