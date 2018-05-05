@@ -1,4 +1,10 @@
-## Introduction [![Build Status](https://travis-ci.org/hwchiu/docker-multus-cni.svg?branch=master)](https://travis-ci.org/hwchiu/docker-multus-cni) [![codecov](https://codecov.io/gh/hwchiu/docker-multus-cni/branch/master/graph/badge.svg)](https://codecov.io/gh/hwchiu/docker-multus-cni)
+## Docker-Multus-CNI[![Build Status](https://travis-ci.org/hwchiu/docker-multus-cni.svg?branch=master)](https://travis-ci.org/hwchiu/docker-multus-cni) [![codecov](https://codecov.io/gh/hwchiu/docker-multus-cni/branch/master/graph/badge.svg)](https://codecov.io/gh/hwchiu/docker-multus-cni) [![Docker Build Status](https://img.shields.io/docker/build/hwchiu/docker-multus-cni.svg)](https://hub.docker.com/r/hwchiu/docker-multus-cni/)
+===================
+This repo is used to deply the multus-CNI into your kubernetes cluster.
+You can use the `kubespray` to start this docker image to copy the multus-cni's binary and other configs.
+
+## Introduction
+
 This docker image is used to deploy the multus-cni in kubernetes cluster.
 In the docker image, it contains the following files.
 1. CNI binary (multus)
