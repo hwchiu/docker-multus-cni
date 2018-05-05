@@ -9,7 +9,7 @@ RUN go get github.com/kardianos/govendor
 RUN govendor sync
 RUN git submodule init && git submodule update
 WORKDIR multus-cni
-RUN ./build && cp ./bin/multus /go/bin/multus
+RUN CGO_ENABLED=0 GOOS=linux ./build -a -tags netgo -ldflags '-w' && cp ./bin/multus /go/bin/multus
 
 WORKDIR /go/src/github.com/hwchiu/docker-multus-cni
 RUN go install .
