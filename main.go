@@ -5,30 +5,42 @@ import (
 	"flag"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/hwchiu/docker-multus-cni/utils"
 )
 
 func main() {
-	var inputCNI string
+	var srcCNIDir string
 	var outputCNI string
 	var kubeconfig string
 
-	flag.StringVar(&inputCNI, "input", "", "The cni config we want to embed into multus CNI config")
+	flag.StringVar(&srcCNIDir, "srcDir", "/etc/cni/net.d/", "The souruce directory contains CNI configs")
 	flag.StringVar(&outputCNI, "output", "/etc/cni/net.d/00-multus.conf", "The output location of multus CNI config")
 	flag.StringVar(&kubeconfig, "kubeconfig", "/etc/kubernetes/admin.conf", "The kubernetes config location for Multus CNI")
 	flag.Parse()
 
-	if inputCNI == "" {
+	if srcCNIDir == "" {
 		log.Fatal("You need to specify the input CNI path")
 	}
 
-	cniObject, err := utils.LoadCNIConfig(inputCNI)
+	netObj, err := utils.NewMultusObject(kubeconfig)
 	if err != nil {
-		log.Fatal("Open CNI config fail", err)
+		log.Fatal("Fail to new the multus object")
 	}
 
-	netObj, err := utils.GenerateMultusObject(kubeconfig, cniObject)
+	err = filepath.Walk(srcCNIDir, func(path string, info os.FileInfo, err error) error {
+		if info.IsDir() {
+			return nil
+		}
+		cniObject, err := utils.LoadCNIConfig(path)
+		if err != nil {
+			log.Printf("Decoding the CNI  %s fail %v\n", path, err)
+			return nil
+		}
+		utils.AddPluginsIntoMults(netObj, cniObject)
+		return nil
+	})
 
 	cniFile, err := os.Create(outputCNI)
 	if err != nil {
