@@ -18,6 +18,8 @@ do
         g)
             echo "Try to embed the CNI ${OPTARG} to mulsu CNI and save in ${DEST_CNI}"
             echo "/go/bin/docker-multus-cni -srcDir "${OPTARG}" -output "${DEST_CNI}""
+            echo "The current file of "${OPTARG}""
+            ls ${OPTARG}
             /go/bin/docker-multus-cni -srcDir "${OPTARG}" -output "${DEST_CNI}"
     esac
 done
