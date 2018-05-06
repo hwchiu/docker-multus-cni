@@ -29,6 +29,10 @@ func main() {
 		log.Fatal("Fail to new the multus object")
 	}
 
+	if _, err := os.Stat(srcCNIDir); os.IsNotExist(err) {
+		log.Fatal("soruce CNI directory doesn't exist, please check the ", srcCNIDir)
+	}
+
 	err = filepath.Walk(srcCNIDir, func(path string, info os.FileInfo, err error) error {
 		if info.IsDir() {
 			return nil
