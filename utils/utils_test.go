@@ -8,7 +8,31 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestLoadCNIConfig(t *testing.T) {
+func writeNoramCNI(t *testing.T) string {
+	//Generate a sample file
+	tmpfile, err := ioutil.TempFile(".", "calico-cni")
+	assert.NoError(t, err)
+
+	content := []byte(`
+	{
+  "name": "cni0",
+  "cniVersion":"0.3.1",
+  "type": "calico",
+  "ipam": {
+	  "type": "calico-ipam"
+  }
+}
+	`)
+
+	_, err = tmpfile.Write(content)
+	assert.NoError(t, err)
+	err = tmpfile.Close()
+	assert.NoError(t, err)
+
+	return tmpfile.Name()
+}
+
+func writePluginCNI(t *testing.T) string {
 	//Generate a sample file
 	tmpfile, err := ioutil.TempFile(".", "calico-cni")
 	assert.NoError(t, err)
@@ -45,16 +69,30 @@ func TestLoadCNIConfig(t *testing.T) {
 }
 	`)
 
-	defer os.Remove(tmpfile.Name()) // clean up
-
 	_, err = tmpfile.Write(content)
 	assert.NoError(t, err)
 	err = tmpfile.Close()
 	assert.NoError(t, err)
 
-	obj, err := LoadCNIConfig(tmpfile.Name())
+	return tmpfile.Name()
+}
+
+func TestLoadCNIConfig(t *testing.T) {
+	//Generate a sample file
+
+	pluginFile := writePluginCNI(t)
+	defer os.Remove(pluginFile) // clean up
+
+	obj, err := LoadCNIConfig(pluginFile)
 	assert.NoError(t, err)
 	assert.NotNil(t, obj)
+
+	normalFile := writeNoramCNI(t)
+	defer os.Remove(normalFile) // clean up
+
+	obj2, err := LoadCNIConfig(normalFile)
+	assert.NoError(t, err)
+	assert.NotNil(t, obj2)
 
 	netObj, err := NewMultusObject("/etc/config")
 	assert.NoError(t, err)
@@ -62,5 +100,9 @@ func TestLoadCNIConfig(t *testing.T) {
 
 	assert.Equal(t, "/etc/config", netObj.Kubeconfig)
 	AddPluginsIntoMults(netObj, obj)
-	assert.Equal(t, 1, len(netObj.Delegates))
+	AddPluginsIntoMults(netObj, obj2)
+	assert.Equal(t, 2, len(netObj.Delegates))
+	for _, v := range netObj.Delegates {
+		assert.NotEqual(t, "", v["name"])
+	}
 }

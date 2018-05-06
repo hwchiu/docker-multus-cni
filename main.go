@@ -42,6 +42,10 @@ func main() {
 		return nil
 	})
 
+	//Add the masterplugin
+	if len(netObj.Delegates) > 0 {
+		netObj.Delegates[0]["masterplugin"] = true
+	}
 	cniFile, err := os.Create(outputCNI)
 	if err != nil {
 		panic(err)
