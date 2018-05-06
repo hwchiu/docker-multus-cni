@@ -38,6 +38,15 @@ func main() {
 			log.Printf("Decoding the CNI  %s fail %v\n", path, err)
 			return nil
 		}
+		if len(*cniObject) <= 0 {
+			return nil
+		}
+
+		if v, ok := (*cniObject)[0]["type"]; ok {
+			if v == "multus" {
+				return nil
+			}
+		}
 		utils.AddPluginsIntoMults(netObj, cniObject)
 		return nil
 	})
