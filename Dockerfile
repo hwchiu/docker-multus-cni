@@ -17,5 +17,5 @@ ADD conf/ /tmp
 ADD yaml/ /tmp
 ADD entrypoint.sh /
 
-ENV DEST_CNI /etc/cni/net.d/00-multus.con
+ENV DEST_CNI /etc/cni/net.d/00-multus.conf
 ENTRYPOINT ["/entrypoint.sh"]
