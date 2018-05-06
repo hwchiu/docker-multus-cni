@@ -26,10 +26,8 @@ func LoadCNIConfig(path string) (*CNIObject, error) {
 	return &data, err
 }
 
-func GenerateMultusObject(config string, cniObject *CNIObject) (*NetConf, error) {
-	plugins := []map[string]interface{}{
-		*cniObject,
-	}
+func NewMultusObject(config string) (*NetConf, error) {
+	plugins := []map[string]interface{}{}
 	data := NetConf{
 		types.NetConf{
 			Type:       "multus",
@@ -40,4 +38,8 @@ func GenerateMultusObject(config string, cniObject *CNIObject) (*NetConf, error)
 		config,
 	}
 	return &data, nil
+}
+
+func AddPluginsIntoMults(netConf *NetConf, cniObject *CNIObject) {
+	netConf.Delegates = append(netConf.Delegates, *cniObject)
 }
