@@ -27,21 +27,12 @@ kind: DaemonSet
 metadata:
   name: kube-multus-ds
   namespace: kube-system
-  labels:
-    tier: node
 spec:
   template:
-    metadata:
-      labels:
-        tier: node
     spec:
       hostNetwork: true
       nodeSelector:
         beta.kubernetes.io/arch: amd64
-      tolerations:
-      - key: node-role.kubernetes.io/master
-        operator: Exists
-        effect: NoSchedule
       containers:
       - name: kube-flannel
         image: hwchiu/docker-multus-cni:latest
@@ -66,7 +57,7 @@ spec:
         - name: cni-conf
           mountPath: /cni/conf
       volumes:
-        - name: run
+        - name: cni-binary
           hostPath:
             path: /opt/cni/bin
         - name: cni-conf
