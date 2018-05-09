@@ -1,5 +1,7 @@
 #!/bin/sh
 
+trap 'exit' TERM
+
 while getopts b:c:k:g: option
 do
     case "${option}"
@@ -23,3 +25,5 @@ do
             /go/bin/docker-multus-cni -srcDir "${OPTARG}" -output "${DEST_CNI}"
     esac
 done
+
+while true; do sleep 1; done
