@@ -2,7 +2,9 @@
 
 trap 'exit' TERM
 
-while getopts b:c:k:g: option
+ISDAEMON='false'
+
+while getopts b:c:k:g:d option
 do
     case "${option}"
         in
@@ -23,7 +25,13 @@ do
             echo "The current file of "${OPTARG}""
             ls ${OPTARG}
             /go/bin/docker-multus-cni -srcDir "${OPTARG}" -output "${DEST_CNI}"
+            ;;
+        d)
+            ISDAEMON='true'
+            ;;
     esac
 done
 
+if [ "$ISDAEMON" == "true" ] ;then
 while true; do sleep 1; done
+fi
