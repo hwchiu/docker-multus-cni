@@ -29,6 +29,9 @@ metadata:
   namespace: kube-system
 spec:
   template:
+    metadata:
+      labels:
+       name: kubue-muultus-ds
     spec:
       hostNetwork: true
       nodeSelector:
@@ -39,15 +42,14 @@ spec:
         command:
         - /go/bin/docker-multus-cni
         args:
-        - -b /cni/bin
-        - -g /conf
+            args: ["-b", "/cni/bin","-g", "/cni/conf", "-d"]
         resources:
           requests:
-            cpu: "100m"
-            memory: "50Mi"
+            cpu: "10m"
+            memory: "10Mi"
           limits:
-            cpu: "100m"
-            memory: "50Mi"
+            cpu: "10m"
+            memory: "10Mi"
         securityContext:
           privileged: true
         env:
