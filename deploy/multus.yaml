@@ -25,10 +25,13 @@ spec:
 apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
-  name: kube-multus-ds
+  name: kube-multus-dss
   namespace: kube-system
 spec:
   template:
+    metadata:
+      labels:
+       name: kube-multus-dss
     spec:
       hostNetwork: true
       nodeSelector:
@@ -36,21 +39,14 @@ spec:
       containers:
       - name: kube-flannel
         image: hwchiu/docker-multus-cni:latest
-        command:
-        - /go/bin/docker-multus-cni
         args:
         - -b /cni/bin
-        - -g /conf
-        resources:
-          requests:
-            cpu: "100m"
-            memory: "50Mi"
-          limits:
-            cpu: "100m"
-            memory: "50Mi"
+        - -g /cni/conf
+	- -d
         securityContext:
           privileged: true
         env:
+
         volumeMounts:
         - name: cni-binary
           mountPath: /cni/bin
