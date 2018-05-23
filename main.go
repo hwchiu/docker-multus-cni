@@ -30,7 +30,7 @@ func main() {
 	}
 
 	if _, err := os.Stat(srcCNIDir); os.IsNotExist(err) {
-		log.Fatal("soruce CNI directory doesn't exist, please check the ", srcCNIDir)
+		log.Fatal("soruce CNI directory doesn't exist, please check the ", srcCNIDir, err)
 	}
 
 	err = filepath.Walk(srcCNIDir, func(path string, info os.FileInfo, err error) error {
