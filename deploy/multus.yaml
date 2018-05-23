@@ -39,10 +39,7 @@ spec:
       containers:
       - name: kube-flannel
         image: hwchiu/docker-multus-cni:latest
-        command:
-        - /go/bin/docker-multus-cni
-        args:
-            args: ["-b", "/cni/bin","-g", "/cni/conf", "-d"]
+        args: ["-b", "/cni/bin","-g", "/cni/conf", "-d"]
         resources:
           requests:
             cpu: "10m"
@@ -53,6 +50,8 @@ spec:
         securityContext:
           privileged: true
         env:
+        - name: DEST_CNI
+          value: /cni/conf/00-multus.conf
         volumeMounts:
         - name: cni-binary
           mountPath: /cni/bin
