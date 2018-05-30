@@ -3,13 +3,18 @@
 # Declare variables to be passed into your templates.
 
 
+namespace: kube-system
+
 customResourceDefinition:
   shortName: net
   plural: networks
   singular: network
   kind: Network
 
-daemonset:
+daemonSet:
+  targetCNIFile: /cni/conf/00-multus.conf
+  cniBinaryPath: /opt/cni/bin
+  cniConfPath: /etc/cni/net.d
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious

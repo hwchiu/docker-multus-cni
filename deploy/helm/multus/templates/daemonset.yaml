@@ -1,19 +1,19 @@
 apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
-  name: kube-multus-ds
-  namespace: kube-system
+  name: {{ template "multus.fullname" . }}
+  namespace: {{ .Values.namespace}}
 spec:
   template:
     metadata:
       labels:
-       name: kubue-muultus-ds
+       name: {{ template "multus.fullname" . }}
     spec:
       hostNetwork: true
       nodeSelector:
         beta.kubernetes.io/arch: amd64
       containers:
-      - name: kube-flannel
+      - name: {{ template "multus.fullname" .}}
         image: hwchiu/docker-multus-cni:latest
         args: ["-b", "/cni/bin","-g", "/cni/conf", "-d"]
         resources:
@@ -27,7 +27,7 @@ spec:
           privileged: true
         env:
         - name: DEST_CNI
-          value: /cni/conf/00-multus.conf
+          value: {{ .Values.daemonSet.targetCNIFile}}
         volumeMounts:
         - name: cni-binary
           mountPath: /cni/bin
@@ -36,7 +36,7 @@ spec:
       volumes:
         - name: cni-binary
           hostPath:
-            path: /opt/cni/bin
+            path: {{ .Values.daemonSet.cniBinaryPath}}
         - name: cni-conf
           hostPath:
-            path: /etc/cni/net.d
+            path: {{ .Values.daemonSet.cniConfPath}}
