@@ -27,12 +27,12 @@ spec:
           privileged: true
         env:
         - name: DEST_CNI
-          value: {{ .Values.daemonSet.targetCNIFile}}
+          value: {{ .Values.daemonSet.tempCNIDir}}/{{ .Values.daemonSet.targetCNIFile}}
         volumeMounts:
         - name: cni-binary
           mountPath: /cni/bin
         - name: cni-conf
-          mountPath: /cni/conf
+          mountPath: {{ .Values.daemonSet.tempCNIDir}}
       volumes:
         - name: cni-binary
           hostPath:

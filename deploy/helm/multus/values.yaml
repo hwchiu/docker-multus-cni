@@ -12,7 +12,8 @@ customResourceDefinition:
   kind: Network
 
 daemonSet:
-  targetCNIFile: /cni/conf/00-multus.conf
+  tempCNIDir: /cni/conf
+  targetCNIFile: 00-multus.conf
   cniBinaryPath: /opt/cni/bin
   cniConfPath: /etc/cni/net.d
 
